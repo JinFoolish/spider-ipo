@@ -9,7 +9,7 @@ class WanSpider(scrapy.Spider):
     name = "wan"
 
     def start_requests(self):
-        urls = ['http://eid.csrc.gov.cn/ipo/1010/index_{}_f.html'.format(i) for i in range(1,51)]
+        urls = ['http://eid.csrc.gov.cn/ipo/1010/index_{}_f.html'.format(i) for i in range(1,51)]\
         +['http://eid.csrc.gov.cn/ipo/1017/index_{}_f.html'.format(i) for i in range(1,51)]
         types = ['03','06']
         body = {
