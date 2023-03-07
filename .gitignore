@@ -1,0 +1,6 @@
+log.txt
+ban.txt
+url.txt
+tutorial/__pycache__/pipelines.cpython-39.pyc
+tutorial/__pycache__/settings.cpython-39.pyc
+tutorial/__pycache__/utils.cpython-39.pyc

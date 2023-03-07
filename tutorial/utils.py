@@ -6,6 +6,7 @@ import random
 from tutorial.settings import USER_AGENT_LIST
 from pdfminer.layout import LTChar, LTText
 import asyncio
+from tqdm import tqdm
 
 def background(f):
     def wrapped(*args, **kwargs):
@@ -22,15 +23,19 @@ def get_middle_str(content, startStr, endStr):
 
 def verify_proxy():
     ran = random.randint(0,len(USER_AGENT_LIST)-1)
-
     proxy = requests.get('http://localhost:5555/random').text
     try:
-        r = requests.get('http://weibo.cn',headers={'User-Agent':USER_AGENT_LIST[ran]},proxies={'http':'http://'+proxy})
+        r = requests.get('http://eid.csrc.gov.cn/ipo/1010/index_f.html',headers={'User-Agent':USER_AGENT_LIST[ran]},
+                         proxies={'http':'http://'+proxy},timeout=4)
         if r.status_code == 200:
             return proxy
         else:
+            with open('ban.txt','a',encoding='utf-8') as f:
+                f.write(proxy+'\t'+str(r.status_code)+'\n')
             return None
-    except:
+    except Exception as e:
+        with open('ban.txt','a',encoding='utf-8') as f:
+            f.write(proxy+'\t'+str(e.args[0])+'\n')
         return None
 
 def getpdf_content(content):
@@ -43,7 +48,7 @@ def getpdf_content(content):
     #     r = requests.get(url,headers={'User-Agent':USER_AGENT_LIST[ran]})
     with io.BytesIO(content) as pdf_file:
         count = 0
-        for page_layout in extract_pages(pdf_file):
+        for page_layout in tqdm(extract_pages(pdf_file)):
             count += 1
             for element in page_layout:
                 if isinstance(element, (LTChar, LTText)):

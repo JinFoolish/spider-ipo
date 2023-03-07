@@ -7,6 +7,8 @@
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 from tutorial.utils import getpdf_content
+from scrapy.pipelines.files import FilesPipeline
+
 class TutorialPipeline:
     def process_item(self, item, spider):
         url = item['url']
